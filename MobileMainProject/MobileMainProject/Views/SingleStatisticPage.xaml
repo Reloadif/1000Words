@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:MobileMainProject.Infrastructure.Converters"
+             xmlns:models="clr-namespace:MobileMainProject.Data.Models"
+             xmlns:viewmodels="clr-namespace:MobileMainProject.ViewModels" x:DataType="viewmodels:SingleStatisticPageViewModel"
+             x:Class="MobileMainProject.Views.SingleStatisticPage">
+    
+    <ContentPage.Resources>
+        <converters:AnswerStateToColorConverter x:Key="AnswerStateToColorConverter"/>
+        <converters:TranslateWordsToBeatifyString x:Key="TranslateWordsToBeatifyString"/>
+    </ContentPage.Resources>
+
+    <StackLayout>
+        <Label HorizontalOptions="Center" Text="Статистика за игру" Style="{StaticResource TitleLableStyle}"/>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Margin="0, 0, 0, 10">
+                <Label Text="Всего слов -" Style="{StaticResource RegularLableStyle}"/>
+                <Label Text="{Binding WordsInRound}" Style="{StaticResource RegularLableStyle}"/>
+            </StackLayout>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <BoxView WidthRequest="25" HeightRequest="25" BackgroundColor="Green"/>
+                    <Label VerticalOptions="Center" Text="{Binding RightWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center">
+                    <BoxView WidthRequest="25" HeightRequest="25" BackgroundColor="Orange"/>
+                    <Label VerticalOptions="Center" Text="{Binding PassWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2" Orientation="Horizontal" HorizontalOptions="Center">
+                    <BoxView WidthRequest="25" HeightRequest="25" BackgroundColor="DarkRed"/>
+                    <Label VerticalOptions="Center" Text="{Binding WrongWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                </StackLayout>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <CollectionView ItemsSource="{Binding StatisticElements}">
+                    <CollectionView.Header>
+                        <Grid ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label HorizontalOptions="Center" Text="Английский" Style="{StaticResource RegularLableStyle}"/>
+                            <Label Grid.Column="1" HorizontalOptions="Center" Text="Русский" Style="{StaticResource RegularLableStyle}"/>
+                            <Label Grid.Column="2" HorizontalOptions="Center" Text="Введенное" Style="{StaticResource RegularLableStyle}"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:StatisticElementModel">
+                            <Grid ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout>
+                                    <Label HorizontalOptions="Center" Text="{Binding Chunk.EnglishWord}" FontSize="15"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" BackgroundColor="{Binding Answer, Converter={StaticResource AnswerStateToColorConverter}}">
+                                    <Label HorizontalOptions="Center" Text="{Binding Chunk.TranslateWords, Converter={StaticResource TranslateWordsToBeatifyString}}" FontSize="15"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="2" BackgroundColor="{Binding Answer, Converter={StaticResource AnswerStateToColorConverter}}">
+                                    <Label HorizontalOptions="Center" Text="{Binding AnsweredWord}" FontSize="15"/>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Text="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource CommonButtonStyle}"/>
+                    <Button Grid.Column="1" Text="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource CommonButtonStyle}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </StackLayout>
+</ContentPage>

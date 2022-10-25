@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:MobileMainProject.Infrastructure.Behaviors"
+             xmlns:database="clr-namespace:MobileMainProject.Data.DataBase"
+             xmlns:settings="clr-namespace:MobileMainProject.ViewModels.Settings" x:DataType="settings:StatisticPageViewModel"
+             x:Class="MobileMainProject.Views.Settings.StatisticPage">
+
+    <StackLayout>
+        <Label HorizontalOptions="Center" Text="Статистика" Style="{StaticResource TitleLableStyle}"/>
+
+        <CollectionView ItemsSource="{Binding StatisticsCollection}" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="database:GameStatistic">
+                    <Grid Padding="10" Style="{StaticResource CollectionDataGrid}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                            <Label Text="Игра №" Style="{StaticResource RegularLableStyle}"/>
+                            <Label Text="{Binding ID}" Style="{StaticResource RegularLableStyle}"/>
+                        </StackLayout>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <BoxView WidthRequest="25" HeightRequest="25" BackgroundColor="Green"/>
+                                <Label VerticalOptions="Center" Text="{Binding RightWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center">
+                                <BoxView WidthRequest="25" HeightRequest="25" BackgroundColor="Orange"/>
+                                <Label VerticalOptions="Center" Text="{Binding PassWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Orientation="Horizontal" HorizontalOptions="Center">
+                                <BoxView WidthRequest="25" HeightRequest="25" BackgroundColor="DarkRed"/>
+                                <Label VerticalOptions="Center" Text="{Binding WrongWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                            </StackLayout>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Behaviors>
+                <behaviors:CollectionViewItemSelectionBehavior Command="{Binding CollectionItemSelectionCommand}"/>
+            </CollectionView.Behaviors>
+        </CollectionView>
+    </StackLayout>
+    
+</ContentPage>

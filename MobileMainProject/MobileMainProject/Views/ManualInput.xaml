@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:beheviors="clr-namespace:MobileMainProject.Infrastructure.Behaviors"
+             xmlns:viewmodels="clr-namespace:MobileMainProject.ViewModels" x:DataType="viewmodels:ManualInputViewModel"
+             x:Class="MobileMainProject.Views.ManualInput">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <StackLayout Spacing="20">
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Label Text="Прогресс" Style="{StaticResource TitleLableStyle}"/>
+                <Label Text="{Binding ProgressInformation}" Style="{StaticResource TitleLableStyle}"/>
+            </StackLayout>
+
+            <Grid HorizontalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                    <BoxView HeightRequest="25" WidthRequest="25" BackgroundColor="Green">
+                        <BoxView.Behaviors>
+                            <beheviors:AnimatedBoxViewBehavior AnimationTrigger="{Binding RightWords}"/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                    <Label VerticalOptions="Center" Text="{Binding RightWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="1" HorizontalOptions="Center" Orientation="Horizontal">
+                    <BoxView HeightRequest="25" WidthRequest="25" BackgroundColor="Orange">
+                        <BoxView.Behaviors>
+                            <beheviors:AnimatedBoxViewBehavior AnimationTrigger="{Binding PassWords}"/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                    <Label VerticalOptions="Center" Text="{Binding PassWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2" HorizontalOptions="Center" Orientation="Horizontal">
+                    <BoxView HeightRequest="25" WidthRequest="25" BackgroundColor="DarkRed">
+                        <BoxView.Behaviors>
+                            <beheviors:AnimatedBoxViewBehavior AnimationTrigger="{Binding WrongWords}"/>
+                        </BoxView.Behaviors>
+                    </BoxView>
+                    <Label VerticalOptions="Center" Text="{Binding WrongWords}" FontSize="15" TextColor="{StaticResource PrimaryColorText}"/>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <Label Text="{Binding EnglishWord}" Style="{StaticResource TitleLableStyle}">
+                    <Label.Behaviors>
+                        <beheviors:AnimatedLabelBehavior AnimationTrigger="{Binding AnimationState}" TaskWait="{Binding AnimationTask}"/>
+                    </Label.Behaviors>
+                </Label>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1">
+                <Entry Text="{Binding InputWord}"/>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Text="Пропустить" Command="{Binding SkipWordCommand}" Style="{StaticResource CommonButtonStyle}"/>
+                    <Button Grid.Column="1" Text="Подтвердить" Command="{Binding AcceptWordCommand}" Style="{StaticResource CommonButtonStyle}"/>
+                </Grid>
+            </StackLayout>
+        </Grid>
+    </Grid>
+    
+</ContentPage>

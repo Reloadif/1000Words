@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:MobileMainProject.Views"
+       xmlns:viewmodels="clr-namespace:MobileMainProject.ViewModels" x:DataType="viewmodels:AppShellViewModel"
+       x:Class="MobileMainProject.AppShell"
+       Shell.NavBarIsVisible="False">
+
+    <TabBar>
+        <Tab Title="Главная" Icon="house.png">
+            <ShellContent ContentTemplate="{DataTemplate views:MainPage}"/>
+        </Tab>
+        <Tab Title="Настройки" Icon="gear.png" IsEnabled="{Binding SettingTabIsEnabled}">
+            <ShellContent ContentTemplate="{DataTemplate views:SettingPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

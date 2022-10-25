@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behavior="clr-namespace:MobileMainProject.Infrastructure.Behaviors"
+             xmlns:converters="clr-namespace:MobileMainProject.Infrastructure.Converters"
+             xmlns:database="clr-namespace:MobileMainProject.Data.DataBase"
+             xmlns:settings="clr-namespace:MobileMainProject.ViewModels.Settings" x:DataType="settings:GameStatisticPageViewModel"
+             x:Class="MobileMainProject.Views.Settings.GameStatisticPage">
+    
+    <ContentPage.Resources>
+        <converters:AnswerStateToColorConverter x:Key="AnswerStateToColorConverter"/>
+        <converters:TranslateWordsToBeatifyString x:Key="TranslateWordsToBeatifyString"/>
+    </ContentPage.Resources>
+
+    <StackLayout>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Label Text="Игра №" Style="{StaticResource TitleLableStyle}"/>
+            <Label Text="{Binding Game.ID}" Style="{StaticResource TitleLableStyle}"/>
+        </StackLayout>
+
+        <StackLayout Spacing="10">
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Label Text="Всего слов -" Style="{StaticResource RegularLableStyle}"/>
+                <Label Text="{Binding Game.Collected.Count}" Style="{StaticResource RegularLableStyle}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Правильно переведенные слова -" TextColor="{StaticResource PrimaryColorText}"/>
+                <Label Text="{Binding Game.RightWords}" TextColor="{StaticResource PrimaryColorText}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Пропущенные слова -" TextColor="{StaticResource PrimaryColorText}"/>
+                <Label Text="{Binding Game.PassWords}" TextColor="{StaticResource PrimaryColorText}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Неправильно переведенные слова -" TextColor="{StaticResource PrimaryColorText}"/>
+                <Label Text="{Binding Game.WrongWords}" TextColor="{StaticResource PrimaryColorText}"/>
+            </StackLayout>
+
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Picker ItemsSource="{Binding FilterElements}" SelectedIndex="{Binding SelectedIndex}" HorizontalTextAlignment="Center" FontSize="20" TextColor="{StaticResource PrimaryColorText}">
+                    <Picker.Behaviors>
+                        <behavior:PickerSelectedItemBehavior Command="{Binding PickerSelectedIndexCommand}"/>
+                    </Picker.Behaviors>
+                </Picker>
+
+                <CollectionView Grid.Row="1" ItemsSource="{Binding StatisticElements}">
+                    <CollectionView.Header>
+                        <Grid ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label HorizontalOptions="Center" Text="Английский" Style="{StaticResource RegularLableStyle}"/>
+                            <Label Grid.Column="1" HorizontalOptions="Center" Text="Русский" Style="{StaticResource RegularLableStyle}"/>
+                            <Label Grid.Column="2" HorizontalOptions="Center" Text="Введенное" Style="{StaticResource RegularLableStyle}"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="database:CollectedData">
+                            <Grid ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout>
+                                    <Label HorizontalOptions="Center" Text="{Binding EnglishWord}" FontSize="15"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" BackgroundColor="{Binding State, Converter={StaticResource AnswerStateToColorConverter}}">
+                                    <Label HorizontalOptions="Center" Text="{Binding TranslateWords, Converter={StaticResource TranslateWordsToBeatifyString}}" FontSize="15"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="2" BackgroundColor="{Binding State, Converter={StaticResource AnswerStateToColorConverter}}">
+                                    <Label HorizontalOptions="Center" Text="{Binding AnsweredWord}" FontSize="15"/>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

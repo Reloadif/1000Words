@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customControls="clr-namespace:MobileMainProject.Infrastructure.CustomControls"
+             xmlns:viewModels="clr-namespace:MobileMainProject.ViewModels" x:DataType="viewModels:GeneralSettingViewModel"
+             x:Class="MobileMainProject.Views.GeneralSetting">
+
+    <StackLayout Margin="20">
+        <StackLayout Spacing="10">
+            <Label Text="Количество слов за раунд:" FontSize="20"/>
+            <customControls:CustomIntStepper MinimumValue="1" MaximumValue="50" Value="{Binding WordsInRound, Mode=TwoWay}" />
+        </StackLayout>
+    </StackLayout>
+    
+</ContentPage>
