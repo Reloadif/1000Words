@@ -1,22 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:MobileMainProject.Infrastructure.Converters"
              xmlns:viewmodels="clr-namespace:MobileMainProject.ViewModels" x:DataType="viewmodels:SettingPageViewModel"
              x:Class="MobileMainProject.Views.SettingPage">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.1*"/>
-            <ColumnDefinition Width="0.8*"/>
-            <ColumnDefinition Width="0.1*"/>
-        </Grid.ColumnDefinitions>
+    <ContentPage.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </ContentPage.Resources>
 
-        <Grid Grid.Column="1" VerticalOptions="Center">
-            <StackLayout Spacing="20">
-                <Button Text="Основные настройки" Command="{Binding GoToGeneralSettingsCommand}" Style="{StaticResource MenuButtonStyle}"/>
-                <Button Text="Статистика" Command="{Binding GoToStatisticPageCommand}" Style="{StaticResource MenuButtonStyle}"/>
-            </StackLayout>
+    <Grid>
+        <ActivityIndicator Scale="0.15" IsRunning="{Binding IsActivityIndicator}" Color="{StaticResource PrimaryBackgroundColor}"/>
+
+        <Grid IsVisible="{Binding IsActivityIndicator, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="0.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1" VerticalOptions="Center">
+                <StackLayout Spacing="20">
+                    <Button Text="Основные настройки" Command="{Binding GoToGeneralSettingsCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button Text="Статистика" Command="{Binding GoToStatisticPageCommand}" Style="{StaticResource MenuButtonStyle}"/>
+                </StackLayout>
+            </Grid>
         </Grid>
     </Grid>
-
+    
 </ContentPage>

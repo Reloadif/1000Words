@@ -74,7 +74,7 @@ namespace MobileMainProject.ViewModels
         {
             if (isAccepted)
             {
-                SaveGameStatistic();
+                await SaveGameStatistic();
                 Mediator.Notify("UpdateGameStatistic");
             }
 
@@ -82,7 +82,7 @@ namespace MobileMainProject.ViewModels
             (Application.Current.MainPage.BindingContext as AppShellViewModel).SettingTabIsEnabled = true;
         }
 
-        private async void SaveGameStatistic()
+        private async Task SaveGameStatistic()
         {
             GameStatistic gameStatistic = new GameStatistic
             {
@@ -109,24 +109,6 @@ namespace MobileMainProject.ViewModels
 
             gameStatistic.Collected = colectedDatas;
             await App.TranslateDB.UpdateGameStatisticAsync(gameStatistic);
-        }
-
-        public static Task<T> BeginInvokeOnMainThreadAsync<T>(Func<T> a)
-        {
-            var tcs = new TaskCompletionSource<T>();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                try
-                {
-                    var result = a();
-                    tcs.SetResult(result);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
-            return tcs.Task;
         }
     }
 }

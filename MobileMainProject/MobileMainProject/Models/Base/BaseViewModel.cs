@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MobileMainProject.Models.Base
 {
@@ -42,5 +44,25 @@ namespace MobileMainProject.Models.Base
         //{
         //    Dispose(false);
         //}
+
+        protected Task<T> BeginInvokeOnMainThreadAsync<T>(Func<T> a)
+        {
+            TaskCompletionSource<T> task = new TaskCompletionSource<T>();
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    T result = a();
+                    task.SetResult(result);
+                }
+                catch (Exception e)
+                {
+                    task.SetException(e);
+                }
+            });
+
+            return task.Task;
+        }
     }
 }
